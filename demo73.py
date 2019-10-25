@@ -1,24 +1,21 @@
-import sqlite3
-import time
+import pandas
+from matplotlib import pyplot, rc
 
-connection = sqlite3.connect("demo76.sqlite")
-print("db connected")
-employees = [
-    {'Name': 'Mark', 'Age': 43, 'Dept': 1, 'Addr': 'Taipei'},
-    {'Name': 'John', 'Age': 38, 'Dept': 2, 'Addr': 'Taipei'},
-    {'Name': 'Tim', 'Age': 35, 'Dept': 1, 'Addr': 'Hsinchu'},
-    {'Name': 'Ken', 'Age': 49, 'Dept': 2, 'Addr': 'Taichung'},
-]
+data = pandas.read_csv('data\\data1.csv', skiprows=4, index_col="Country Name")
+print(data.shape)
+print(data.head(n=10))
+print(data.columns)
+print(data.info())
+print(data.describe())
 
-DML1 = "INSERT INTO EMPLOYEE (NAME, AGE, ADDRESS) VALUES(?,?,?)"
-startTime = time.time()
-for j in range(1000):
-    for e in employees:
-        connection.execute(DML1, (e['Name'], e['Age'], e['Addr']));
-        connection.commit()  # 4000 records, 4000commits
-    #connection.commit() # 4000 records, 1000commits
-#connection.commit() # 4000 records, 1 commit
-connection.close()
-endTime = time.time()
-delta = endTime - startTime
-print(delta)
+ausData = data[data['Country Code'] == 'AUS']
+print(ausData.shape)
+print(ausData['1960'])
+print(type(data), type(ausData))
+print(pyplot.style.available)
+font = {'family':"Source Code Pro"}
+rc('font',**font)
+pyplot.style.use('dark_background')
+selected_years = ['1960','1965','1970','1975']
+ausData.plot(kind='bar', y=selected_years)
+pyplot.show()

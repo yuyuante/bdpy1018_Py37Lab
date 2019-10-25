@@ -5,7 +5,7 @@ import scipy.stats as stats
 
 mu = 80
 sigma = 8
-print(np.random.randn(10000))
+
 x = mu + sigma * np.random.randn(10000)
 print(type(x), x.shape)
 print(x[:10])
